@@ -265,12 +265,36 @@
 > Böylece prefablar ile görsel assetlerin ayrışacağı ve projenin daha düzenli kalacağı açıklandı.
 
 **Nasıl Kullandım:**
+- [ ] Direkt kullandım  
+- [x] Adapte ettim  
+- [ ] Reddettim  
+
+**Açıklama:**
+> UI görsellerini başlangıçta Prefabs klasörüne koymayı düşünmüştüm ancak bunun uzun vadede karmaşa yaratabileceğini fark ettim.  
+## Prompt 12: README’nin Profesyonel Hale Getirilmesi
+---
+
+**Araç:** ChatGPT  
+**Tarih:** 2026-01-31 02:10  
+
+**Prompt:**
+> Hazırladığım README metnini daha profesyonel, sektörel ve okunabilir hale getirmek istiyorum.  
+> Teknik detayları kaybetmeden, reviewer’ın hızlıca anlayabileceği bir dile dönüştürmemde yardımcı olur musun?
+
+**Alınan Cevap (Özet):**
+> README metni daha sade, net ve sektörel bir dile dönüştürüldü.  
+> Teknik kavramlar korunurken gereksiz tekrarlar kaldırıldı ve proje mimarisi daha akıcı şekilde anlatıldı.  
+> İngilizce teknik dokümantasyon standardına uygun bir yapı önerildi.
+
+**Nasıl Kullandım:**
 - [x] Direkt kullandım  
 - [ ] Adapte ettim  
 - [ ] Reddettim  
 
 **Açıklama:**
-> UI görsellerini başlangıçta Prefabs klasörüne koymayı düşünmüştüm ancak bunun uzun vadede karmaşa yaratabileceğini fark ettim.  
+> README metnimi daha anlaşılır ve profesyonel hale getirmek için önerilen düzenlemeleri doğrudan kullandım.  
+> Amaç, projeyi inceleyen kişinin sistemi kısa sürede kavrayabilmesi ve teknik kararları net görebilmesiydi.
+
 
 
 
