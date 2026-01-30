@@ -1,68 +1,42 @@
 using System;
 using UnityEngine;
+using LuduCase.Runtime.Core;
 
 namespace LuduCase.Runtime.Player
 {
     /// <summary>
-    /// Raycast-based detector that finds the best interactable in front of the camera.
-    /// Keeps a single active target and notifies listeners when it changes.
+    /// Raycast-based detector that finds the nearest IInteractable in front of the camera.
     /// </summary>
     public sealed class InteractionDetector : MonoBehaviour
     {
         #region Inspector
 
-        [Header("Raycast")]
         [SerializeField] private Transform m_raycastOrigin;
-        [SerializeField] private float m_maxDistance = 2.25f;
-        [SerializeField] private LayerMask m_interactableMask = ~0;
-
-        [Header("Selection")]
+        [SerializeField] private float m_maxDistance = 2.5f;
         [SerializeField] private float m_sphereRadius = 0.15f;
-
-        [Header("Debug")]
-        [SerializeField] private bool m_drawDebug = true;
-
-        #endregion
-
-        #region Public Events
-
-        /// <summary>
-        /// Fired whenever the current detected interactable changes.
-        /// </summary>
-        public event Action<GameObject> OnTargetChanged;
+        [SerializeField] private LayerMask m_layerMask = ~0;
+        [SerializeField] private bool m_debugLogs = true;
 
         #endregion
 
-        #region Private Fields
+        #region Events
 
-        private GameObject m_currentTarget;
+        public event Action<IInteractable> OnTargetChanged;
 
         #endregion
 
-        #region Unity Methods
+        #region Fields
 
-        private void Reset()
-        {
-            if (m_raycastOrigin == null && Camera.main != null)
-            {
-                m_raycastOrigin = Camera.main.transform;
-            }
-        }
+        private IInteractable m_current;
+
+        #endregion
+
+        #region Unity
 
         private void Awake()
         {
-            if (m_raycastOrigin == null)
-            {
-                Camera mainCam = Camera.main;
-                if (mainCam != null)
-                {
-                    m_raycastOrigin = mainCam.transform;
-                }
-                else
-                {
-                    Debug.LogError($"{nameof(InteractionDetector)} requires a raycast origin. Assign a camera transform.", this);
-                }
-            }
+            if (m_raycastOrigin == null && Camera.main != null)
+                m_raycastOrigin = Camera.main.transform;
         }
 
         private void Update()
@@ -72,19 +46,16 @@ namespace LuduCase.Runtime.Player
 
         #endregion
 
-        #region Public API
+        #region Public
 
-        /// <summary>
-        /// Returns the current detected target (may be null).
-        /// </summary>
-        public GameObject GetCurrentTarget()
+        public IInteractable GetCurrentInteractable()
         {
-            return m_currentTarget;
+            return m_current;
         }
 
         #endregion
 
-        #region Internal
+        #region Detection
 
         private void Detect()
         {
@@ -96,46 +67,49 @@ namespace LuduCase.Runtime.Player
 
             Ray ray = new Ray(m_raycastOrigin.position, m_raycastOrigin.forward);
 
-            bool hasHit = Physics.SphereCast(
+            RaycastHit[] hits = Physics.SphereCastAll(
                 ray,
                 m_sphereRadius,
-                out RaycastHit hit,
                 m_maxDistance,
-                m_interactableMask,
+                m_layerMask,
                 QueryTriggerInteraction.Collide);
 
-            if (!hasHit)
+            IInteractable nearest = null;
+            float nearestDistance = float.MaxValue;
+
+            foreach (var hit in hits)
             {
-                SetTarget(null);
-                return;
+                IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
+                if (interactable == null)
+                    continue;
+
+                if (hit.distance < nearestDistance)
+                {
+                    nearest = interactable;
+                    nearestDistance = hit.distance;
+                }
             }
 
-            // Currently it only captures the object that is touched
-            // Later we will resolve IInteractable on it and apply additional validation.
-            SetTarget(hit.collider.gameObject);
-
-            if (m_drawDebug)
-            {
-                Debug.DrawLine(ray.origin, hit.point, Color.green);
-            }
+            SetTarget(nearest);
         }
 
-        private void SetTarget(GameObject newTarget)
+        private void SetTarget(IInteractable newTarget)
         {
-            if (ReferenceEquals(m_currentTarget, newTarget))
-            {
+            if (ReferenceEquals(m_current, newTarget))
                 return;
-            }
 
-            m_currentTarget = newTarget;
+            m_current = newTarget;
 
-            if (m_drawDebug)
+            if (m_debugLogs)
             {
-                string name = m_currentTarget != null ? m_currentTarget.name : "null";
-                Debug.Log($"[InteractionDetector] Target: {name}", this);
+                string name = "null";
+                if (m_current is Component c)
+                    name = c.gameObject.name;
+
+                Debug.Log($"[InteractionDetector] Interactable: {name}", this);
             }
 
-            OnTargetChanged?.Invoke(m_currentTarget);
+            OnTargetChanged?.Invoke(m_current);
         }
 
         #endregion
