@@ -42,17 +42,26 @@ namespace LuduCase.Runtime.Player
 
         #region Private Methods
 
-        private void HandleInput()
+       private void HandleInput()
         {
             IInteractable currentTarget = m_detector.GetCurrentInteractable();
 
             if (currentTarget == null)
             {
                 ResetHold();
+                m_hud.UpdatePrompt(new InteractionPromptData("", false, "")); 
                 return;
             }
 
             var context = new InteractionContext(gameObject);
+
+
+            var data = currentTarget.GetPromptData(context);
+            string cleanText = data.PromptText.Replace("{key}", m_interactionKey.ToString());
+            data = new InteractionPromptData(cleanText, data.ShowHoldProgress, data.CannotInteractReason);
+
+            m_hud.UpdatePrompt(data);
+
 
             if (!currentTarget.CanInteract(context))
             {
