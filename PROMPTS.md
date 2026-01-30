@@ -225,5 +225,53 @@
 
 **Açıklama:**
 > "Hold" mekaniği ve görselleştirilmesi (UI Progress Bar) başarıyla test edildi. Collider çakışma sorunu (Raycast blocking) çözüldü.
+---
+
+## Prompt 10: Şalter (Switch) Mekaniği ve UI Cilalama
+
+**Araç:** ChatGPT-4
+**Tarih:** 2026-01-31 00.15
+
+**Prompt:**
+> Sistemin son parçası olan Şalter (Switch) mekaniğini eklemek istiyorum. UnityEvent yapısını kullanarak modüler, yani kod değiştirmeden ışık veya kapı tetikleyebilecek bir yapı kur.
+> Ayrıca UI tarafında tespit ettiğim şu eksikleri gideren bir refactor önerisi sun:
+> 1. Etkileşim durumu değiştiğinde açık/kapalı metin anlık güncellensin.
+> 2. Ekranda "{key}" yerine atadığımız gerçek tuş e dinamik olarak yazsın.
+
+**Alınan Cevap (Özet):**
+> Switch sınıfı için esnek UnityEvent yapısı sağlandı. UIın state değişimlerini yakalayabilmesi için InputHandler tarafına gerekli kontrol blokları ve metin formatlama kodları iletildi.
+
+**Nasıl Kullandım:**
+- [ ] Direkt kullandım
+- [x] Adapte ettim
+- [ ] Reddettim
+
+**Açıklama:**
+> Observer pattern gereği, UIın state değişimlerini anlık yakalamasını sağladım. Kod içerisindeki string operasyonlarını düzenleyerek sisteme son cilayı (polish) attım ve Switch yapısını entegre ettim.
+---
+
+## Prompt 11: UI Görsellerinin Klasör Yapısı 
+
+**Araç:** ChatGPT  
+**Tarih:** 2026-01-31 00:20  
+
+**Prompt:**
+> UI için kullanacağım görseller  için bir “Images” klasörü açmak istiyorum.  
+> Prefabs altında mı yoksa UI altında ayrı bir klasörde mi tutmam daha doğru olur?  
+> Ludu Arts naming ve klasör düzenine göre en doğru yeri öğrenmek istiyorum.
+
+**Alınan Cevap (Özet):**
+> Prefabs klasörünün sadece sahneye bırakılan hazır objeler için kullanılması gerektiği, ham görsellerin ise UI altında ayrı bir Art/Images klasöründe tutulmasının daha doğru olduğu belirtildi.  
+> Böylece prefablar ile görsel assetlerin ayrışacağı ve projenin daha düzenli kalacağı açıklandı.
+
+**Nasıl Kullandım:**
+- [x] Direkt kullandım  
+- [ ] Adapte ettim  
+- [ ] Reddettim  
+
+**Açıklama:**
+> UI görsellerini başlangıçta Prefabs klasörüne koymayı düşünmüştüm ancak bunun uzun vadede karmaşa yaratabileceğini fark ettim.  
+
+
 
 
