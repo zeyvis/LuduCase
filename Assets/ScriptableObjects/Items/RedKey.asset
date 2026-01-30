@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8dbdc748a8eaca45a9df3e44621f1a2, type: 3}
   m_Name: RedKey
   m_EditorClassIdentifier: 
-  m_keyName: Key
+  m_keyName: Red Key
