@@ -127,4 +127,30 @@
 > Gelen önerileri birebir kopyalamak yerine kendi sınıf isimlerime ve mevcut mimariye göre uyguladım.  
 > Özellikle isimlendirme ve XML doc kısmında daha kısa ama daha net bir dil kullanmaya odaklandım.  
 > Reviewerın hızlı anlayabilmesi için summaryleri tek sorumluluk mantığıyla sade tuttum.
+---
+
+## Prompt 6: InteractionDetector Refactor (IInteractable filtre + en yakın hedef seçimi)
+
+**Araç:** ChatGPT  
+**Tarih/Saat:** 2026-01-30 21.06
+
+**Prompt:**
+> InteractionDetector şu an raycast ile her objeyi hedef alıyor.  
+> Bunu sadece IInteractable olan objeleri seçecek şekilde refactor etmek istiyorum.  
+> SphereCastAll ile birden fazla hit içinde en yakın interatable ı seçmek mantıklı mı  
+> Ayrıca event ve API yı GameObject yerine IInteractable taşıyacak şekilde düzenlemek doğru mu?
+> Bunu nasıl yapacağımı genel detaylarıyla anlat.
+
+**Alınan Cevap (Özet):**
+> Detector ın sadece IInteractable seçmesi önerildi.  
+
+**Nasıl Kullandım:**
+- [ ] Direkt kullandım
+- [x] Adapte ettim
+- [ ] Reddettim
+
+**Açıklama:**
+> Kodu birebir kopyalamak yerine mevcut detectorımı refactor edecek şekilde uyguladım.  
+> Çıktıyı “IInteractable hedefleme - en yakın seçim - hedef değişim eventi” olacak şekilde sade tuttum.
+
 
