@@ -99,4 +99,32 @@
 
 **Açıklama:**
 > Prompt başlıklarını daha açıklayıcı hale getirerek case yi inceleyen kişinin hangi adımda hangi kararı verdiğimi daha hızlı görmesini istedim ondan dolayı kullandım.
+---
+
+## Prompt 5: Ludu Arts C# Convention Uyum Kontrolü + Summary’leri Profesyonelleştirme
+
+**Araç:** ChatGPT  
+**Tarih/Saat:** 2026-01-30 20.45
+
+**Prompt:**
+> Bu kodu Ludu Arts C# convention’larına göre refactor et.  
+> Ve eklemem veya değiştirmem gereken yerleri söyle ve nedenlerini de belirt.
+> Ayrıca summary açıklamalarını daha profesyonel hale getirmem için tavsiyeler ver.  
+  
+
+
+**Alınan Cevap (Özet):**
+> Kodun convention uyumu elden geçirildi.  
+> Summary tarafında format tavsiyesi edildi.  
+> Ayrıca silent bypass yerine log/guard kullanımının altı çizildi.
+
+**Nasıl Kullandım:**
+- [ ] Direkt kullandım
+- [x] Adapte ettim
+- [ ] Reddettim
+
+**Açıklama:**
+> Gelen önerileri birebir kopyalamak yerine kendi sınıf isimlerime ve mevcut mimariye göre uyguladım.  
+> Özellikle isimlendirme ve XML doc kısmında daha kısa ama daha net bir dil kullanmaya odaklandım.  
+> Reviewerın hızlı anlayabilmesi için summaryleri tek sorumluluk mantığıyla sade tuttum.
 
