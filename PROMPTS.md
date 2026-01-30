@@ -203,5 +203,27 @@
 
 **Açıklama:**
 > Kendi yazdığım kapı mantığını AI asistanı ile rafine ettim. Özellikle XML dokümantasyonları ve değişken isimlendirmeleri konusunda destek alarak kodu "production-ready" hale getirdik.
+---
+
+## Prompt 9: Sandık (Chest) ve Hold Interaction Mantığı
+
+**Araç:** ChatGPT-4
+**Tarih:** 2026-01-30 23:20
+
+**Prompt:**
+> `IInteractable` sistemine Hold  mekaniğini entegre etmek için Chest sınıfını tasarladım.
+> Bu sınıfta InteractionType.Hold kullandığımda InteractionInputHandler tarafındaki HoldDuration ile uyumlu çalışmasını nasıl sağlarım?
+> Ayrıca sandık açıldığında içinden item spawn etmesi (Instantiate) performans açısından doğru mu?
+
+**Alınan Cevap (Özet):**
+> InteractionInputHandler zaten IInteractable.HoldDuration verisini okuyarak UI barını doldurduğu için Chest sınıfının sadece bu property'i set etmesi yeterli oldu. Raycast engellememesi için Collider boyutlarının doğru ayarlanması gerektiği not edildi.
+
+**Nasıl Kullandım:**
+- [ ] Direkt kullandım
+- [x] Adapte ettim
+- [ ] Reddettim
+
+**Açıklama:**
+> "Hold" mekaniği ve görselleştirilmesi (UI Progress Bar) başarıyla test edildi. Collider çakışma sorunu (Raycast blocking) çözüldü.
 
 
