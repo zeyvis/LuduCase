@@ -57,6 +57,11 @@ namespace LuduCase.Runtime.Interactables
         private void Awake()
         {
             m_audioSource = GetComponent<AudioSource>();
+            if (m_audioSource == null)
+            {
+                Debug.LogError("[Door] AudioSource component is missing. Audio playback will be disabled.", this);
+            }
+
             if (m_doorVisual != null)
             {
                 m_closedRotation = m_doorVisual.localRotation;
@@ -64,6 +69,8 @@ namespace LuduCase.Runtime.Interactables
             }
             else
             {
+                Debug.LogWarning("[Door] DoorVisual is not assigned. Falling back to root transform for rotation.", this);
+
                 m_doorVisual = transform;
                 m_closedRotation = transform.localRotation;
                 m_openRotation = m_closedRotation * Quaternion.Euler(0, m_openAngle, 0);
@@ -93,6 +100,11 @@ namespace LuduCase.Runtime.Interactables
 
         public InteractionPromptData GetPromptData(InteractionContext context)
         {
+            if (context.Interactor == null)
+            {
+                Debug.LogError("[Door] InteractionContext.Interactor is null. Prompt data cannot be resolved.", this);
+                return new InteractionPromptData("N/A", false, "Invalid interactor");
+            }
             if (m_isLocked)
             {
                 var inventory = context.Interactor.GetComponent<Inventory>();
@@ -115,6 +127,11 @@ namespace LuduCase.Runtime.Interactables
 
         public void Interact(InteractionContext context)
         {
+            if (context.Interactor == null)
+            {
+                Debug.LogError("[Door] InteractionContext.Interactor is null. Interaction aborted.", this);
+                return;
+            }
             if (m_isLocked)
             {
                 var inventory = context.Interactor.GetComponent<Inventory>();
@@ -125,16 +142,26 @@ namespace LuduCase.Runtime.Interactables
                 }
                 else
                 {
+                    Debug.LogWarning("[Door] Interaction blocked. Door is locked and required key is missing.", this);
                     return;
                 }
+
             }
             else
             {
                 m_isOpen = !m_isOpen;
                 if (m_moveSound != null)
                 {
-                    m_audioSource.PlayOneShot(m_moveSound);
+                    if (m_audioSource == null)
+                    {
+                        Debug.LogError("[Door] Cannot play move sound because AudioSource is missing.", this);
+                    }
+                    else
+                    {
+                        m_audioSource.PlayOneShot(m_moveSound);
+                    }
                 }
+
             }
         }
 

@@ -30,7 +30,14 @@ namespace LuduCase.Runtime.Player
         private void Awake()
         {
             if (m_detector == null)
+            {
                 m_detector = GetComponent<InteractionDetector>();
+                if (m_detector == null)
+                {
+                    Debug.LogError("[InteractionInputHandler] InteractionDetector component is missing. Interactions will not work.", this);
+                }
+            }
+
         }
 
         private void Update()
@@ -44,12 +51,26 @@ namespace LuduCase.Runtime.Player
 
        private void HandleInput()
         {
+            if (m_detector == null)
+            {
+                Debug.LogError("[InteractionInputHandler] Detector reference is null. Input handling aborted.", this);
+                return;
+            }
+
             IInteractable currentTarget = m_detector.GetCurrentInteractable();
+
 
             if (currentTarget == null)
             {
                 ResetHold();
-                m_hud.UpdatePrompt(new InteractionPromptData("", false, "")); 
+                if (m_hud == null)
+                {
+                    Debug.LogError("[InteractionInputHandler] HUD reference is null. Prompt cannot be updated.", this);
+                }
+                else
+                {
+                    m_hud.UpdatePrompt(new InteractionPromptData("", false, ""));
+                }
                 return;
             }
 
@@ -60,7 +81,15 @@ namespace LuduCase.Runtime.Player
             string cleanText = data.PromptText.Replace("{key}", m_interactionKey.ToString());
             data = new InteractionPromptData(cleanText, data.ShowHoldProgress, data.CannotInteractReason);
 
-            m_hud.UpdatePrompt(data);
+            if (m_hud == null)
+            {
+                Debug.LogError("[InteractionInputHandler] HUD reference is null. Prompt cannot be updated.", this);
+            }
+            else
+            {
+                m_hud.UpdatePrompt(data);
+            }
+
 
 
             if (!currentTarget.CanInteract(context))
@@ -98,7 +127,15 @@ namespace LuduCase.Runtime.Player
                 m_holdTimer += Time.deltaTime;
 
                 float duration = target.HoldDuration;
+                if (duration <= 0f)
+                {
+                    Debug.LogError("[InteractionInputHandler] HoldDuration is zero or negative. Interaction aborted.", this);
+                    ResetHold();
+                    return;
+                }
+
                 float progress = Mathf.Clamp01(m_holdTimer / duration);
+
 
                 if (m_hud != null)
                 {

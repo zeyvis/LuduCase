@@ -70,10 +70,19 @@ namespace LuduCase.Runtime.Interactables
             m_isOn = !m_isOn;
 
             m_onToggle?.Invoke(m_isOn);
-            if (m_switchSound != null)
+            if (m_switchSound == null)
             {
-                m_audioSource.PlayOneShot(m_switchSound); 
+                Debug.LogWarning("[Switch] Switch sound is not assigned. SFX will be skipped.", this);
             }
+            else if (m_audioSource == null)
+            {
+                Debug.LogError("[Switch] Cannot play SFX because AudioSource is missing.", this);
+            }
+            else
+            {
+                m_audioSource.PlayOneShot(m_switchSound);
+            }
+
 
             UpdateVisual();
             Debug.Log($"[Switch] Toggled: {m_isOn}");
@@ -85,13 +94,15 @@ namespace LuduCase.Runtime.Interactables
 
         private void UpdateVisual()
         {
-            if (m_handleVisual != null)
+            if (m_handleVisual == null)
             {
-                float angle = m_isOn ? m_handleAngle : -m_handleAngle;
-
-                
-                m_handleVisual.localRotation = Quaternion.Euler(0, 0, angle);
+                Debug.LogWarning("[Switch] Handle visual is not assigned. Visual update skipped.", this);
+                return;
             }
+
+            float angle = m_isOn ? m_handleAngle : -m_handleAngle;
+            m_handleVisual.localRotation = Quaternion.Euler(0, 0, angle);
+
         }
 
         #endregion

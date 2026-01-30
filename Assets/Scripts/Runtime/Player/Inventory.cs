@@ -22,11 +22,18 @@ namespace LuduCase.Runtime.Player
         /// </summary>
         public void AddKey(KeyData key)
         {
-            if (key != null && !m_collectedKeys.Contains(key))
+            if (key == null)
+            {
+                Debug.LogError("[Inventory] Attempted to add a null key.", this);
+                return;
+            }
+
+            if (!m_collectedKeys.Contains(key))
             {
                 m_collectedKeys.Add(key);
                 Debug.Log($"[Inventory] Added Key: {key.KeyName}");
             }
+
         }
 
         /// <summary>
@@ -34,7 +41,14 @@ namespace LuduCase.Runtime.Player
         /// </summary>
         public bool HasKey(KeyData key)
         {
+            if (key == null)
+            {
+                Debug.LogError("[Inventory] HasKey called with null key.", this);
+                return false;
+            }
+
             return m_collectedKeys.Contains(key);
+
         }
 
         #endregion

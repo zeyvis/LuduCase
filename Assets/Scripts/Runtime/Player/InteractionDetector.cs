@@ -35,8 +35,18 @@ namespace LuduCase.Runtime.Player
 
         private void Awake()
         {
-            if (m_raycastOrigin == null && Camera.main != null)
-                m_raycastOrigin = Camera.main.transform;
+            if (m_raycastOrigin == null)
+            {
+                if (Camera.main != null)
+                {
+                    m_raycastOrigin = Camera.main.transform;
+                }
+                else
+                {
+                    Debug.LogError("[InteractionDetector] Raycast origin is not assigned and no Main Camera found. Detection will not work.", this);
+                }
+            }
+
         }
 
         private void Update()
@@ -61,9 +71,11 @@ namespace LuduCase.Runtime.Player
         {
             if (m_raycastOrigin == null)
             {
+                Debug.LogError("[InteractionDetector] Raycast origin is null. Detection skipped.", this);
                 SetTarget(null);
                 return;
             }
+
 
             Ray ray = new Ray(m_raycastOrigin.position, m_raycastOrigin.forward);
 
@@ -81,7 +93,12 @@ namespace LuduCase.Runtime.Player
             {
                 IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
                 if (interactable == null)
+                {
+                    if (m_debugLogs)
+                        Debug.LogWarning("[InteractionDetector] Hit object has no IInteractable component.", hit.collider.gameObject);
                     continue;
+                }
+
 
                 if (hit.distance < nearestDistance)
                 {
@@ -109,7 +126,15 @@ namespace LuduCase.Runtime.Player
                 Debug.Log($"[InteractionDetector] Interactable: {name}", this);
             }
 
-            OnTargetChanged?.Invoke(m_current);
+            if (OnTargetChanged == null)
+            {
+                Debug.LogWarning("[InteractionDetector] OnTargetChanged event has no listeners.", this);
+            }
+            else
+            {
+                OnTargetChanged.Invoke(m_current);
+            }
+
         }
 
         #endregion

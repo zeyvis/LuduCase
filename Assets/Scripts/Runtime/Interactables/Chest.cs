@@ -57,11 +57,21 @@ namespace LuduCase.Runtime.Interactables
         private void Awake()
         {
             m_audioSource = GetComponent<AudioSource>();
+            if (m_audioSource == null)
+            {
+                Debug.LogError("[Chest] AudioSource component is missing. Audio playback will be disabled.", this);
+            }
+
             if (m_lidVisual != null)
             {
                 m_closedRotation = m_lidVisual.localRotation;
                 m_openRotation = m_closedRotation * Quaternion.Euler(m_openAngle, 0, 0);
             }
+            else
+            {
+                Debug.LogWarning("[Chest] Lid visual is not assigned. Chest will open logically but without animation.", this);
+            }
+
         }
 
         private void Update()
@@ -99,19 +109,42 @@ namespace LuduCase.Runtime.Interactables
 
         public void Interact(InteractionContext context)
         {
-            if (m_isOpened) return;
+            if (m_isOpened)
+            {
+                Debug.LogWarning("[Chest] Interaction ignored. Chest is already opened.", this);
+                return;
+            }
+
 
             m_isOpened = true;
             if (m_openSound != null)
             {
-                m_audioSource.PlayOneShot(m_openSound);
+                if (m_audioSource == null)
+                {
+                    Debug.LogError("[Chest] Cannot play open sound because AudioSource is missing.", this);
+                }
+                else
+                {
+                    m_audioSource.PlayOneShot(m_openSound);
+                }
             }
+
             Debug.Log("[Chest] Opened!");
 
 
             if (m_itemToDrop != null)
             {
-                Vector3 spawnPos = m_dropPoint != null ? m_dropPoint.position : transform.position + Vector3.up;
+                Vector3 spawnPos;
+                if (m_dropPoint != null)
+                {
+                    spawnPos = m_dropPoint.position;
+                }
+                else
+                {
+                    Debug.LogWarning("[Chest] Drop point is not assigned. Using fallback spawn position.", this);
+                    spawnPos = transform.position + Vector3.up;
+                }
+
                 Instantiate(m_itemToDrop, spawnPos, Quaternion.identity);
             }
 

@@ -35,11 +35,24 @@ namespace LuduCase.Runtime.Player
         private void Awake()
         {
             m_characterController = GetComponent<CharacterController>();
-
-            if (m_cameraTransform == null && Camera.main != null)
+            if (m_characterController == null)
             {
-                m_cameraTransform = Camera.main.transform;
+                Debug.LogError("[SimpleFirstPersonController] CharacterController component is missing. Movement will not work.", this);
             }
+
+
+            if (m_cameraTransform == null)
+            {
+                if (Camera.main != null)
+                {
+                    m_cameraTransform = Camera.main.transform;
+                }
+                else
+                {
+                    Debug.LogError("[SimpleFirstPersonController] CameraTransform is not assigned and no Main Camera found. Look rotation will not work.", this);
+                }
+            }
+
 
 
             Cursor.lockState = CursorLockMode.Locked;
@@ -79,7 +92,12 @@ namespace LuduCase.Runtime.Player
 
         private void HandleRotation()
         {
-            if (m_cameraTransform == null) return;
+            if (m_cameraTransform == null)
+            {
+                Debug.LogWarning("[SimpleFirstPersonController] CameraTransform is null. Rotation skipped.", this);
+                return;
+            }
+
 
             float mouseX = Input.GetAxis("Mouse X") * m_mouseSensitivity;
             float mouseY = Input.GetAxis("Mouse Y") * m_mouseSensitivity;
