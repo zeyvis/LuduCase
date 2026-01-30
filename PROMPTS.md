@@ -178,5 +178,30 @@
 
 **Açıklama:**
 > Modüler bir yapı kuruldu. Anahtarlar veri olarak ayrıştırıldı, böylece ileride farklı renk/tip anahtarlar kolayca eklenebilir.
+---
+
+## Prompt 8: Kilitli Kapı (Door) Refactoring ve Standart Kontrolü
+
+**Araç:** ChatGPT-4
+**Tarih:** 2026-01-30 22.45
+
+**Prompt:**
+> Kilitli kapı mekaniği için kurguladığım mantığı (Locked/Unlocked state, Key check) Ludu Arts C# standartlarına uygun hale getirmem gerekiyor.
+> Yazdığım taslağı şu kurallara göre refactor et:
+> - Private field'lar `m_` prefix almalı.
+> - Region sıralaması standarda uymalı.
+> - `IInteractable` implementasyonu explicit/implicit durumuna dikkat edilmeli.
+> Ayrıca Clean Code prensipleri gereği Update içinde sürekli animasyon hesaplamak yerine nasıl bir optimizasyon yapabilirim?
+
+**Alınan Cevap (Özet):**
+> Kod, Ludu Arts isimlendirme standartlarına göre düzenlendi. CanInteract ve GetPromptData metodlarının sorumlulukları ayrıştırıldı. Animasyon için Coroutine veya Tween kullanımı önerildi ancak bu case özelinde basit Slerp kullanımının okunabilirlik açısından yeterli olduğu belirtildi.
+
+**Nasıl Kullandım:**
+- [ ] Direkt kullandım
+- [x] Adapte ettim
+- [ ] Reddettim
+
+**Açıklama:**
+> Kendi yazdığım kapı mantığını AI asistanı ile rafine ettim. Özellikle XML dokümantasyonları ve değişken isimlendirmeleri konusunda destek alarak kodu "production-ready" hale getirdik.
 
 
