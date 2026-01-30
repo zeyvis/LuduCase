@@ -8,6 +8,7 @@ namespace LuduCase.Runtime.Interactables
     /// <summary>
     /// Represents a door that can be locked, unlocked, opened, and closed.
     /// </summary>
+    [RequireComponent(typeof(AudioSource))] 
     public sealed class Door : MonoBehaviour, IInteractable
     {
         #region Inspector
@@ -28,6 +29,9 @@ namespace LuduCase.Runtime.Interactables
 
         [Tooltip("Speed of opening/closing animation.")]
         [SerializeField] private float m_animationSpeed = 2f;
+        [Header("Audio")]
+        [SerializeField] private AudioClip m_moveSound; 
+
 
         #endregion
 
@@ -36,6 +40,7 @@ namespace LuduCase.Runtime.Interactables
         private bool m_isOpen;
         private Quaternion m_closedRotation;
         private Quaternion m_openRotation;
+        private AudioSource m_audioSource; 
 
         #endregion
 
@@ -51,6 +56,7 @@ namespace LuduCase.Runtime.Interactables
 
         private void Awake()
         {
+            m_audioSource = GetComponent<AudioSource>();
             if (m_doorVisual != null)
             {
                 m_closedRotation = m_doorVisual.localRotation;
@@ -125,6 +131,10 @@ namespace LuduCase.Runtime.Interactables
             else
             {
                 m_isOpen = !m_isOpen;
+                if (m_moveSound != null)
+                {
+                    m_audioSource.PlayOneShot(m_moveSound);
+                }
             }
         }
 

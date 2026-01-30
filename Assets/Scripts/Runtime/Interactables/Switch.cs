@@ -8,6 +8,7 @@ namespace LuduCase.Runtime.Interactables
     /// A switch that triggers UnityEvents when toggled.
     /// Demonstrates the observer pattern/event-driven architecture.
     /// </summary>
+    [RequireComponent(typeof(AudioSource))]
     public sealed class Switch : MonoBehaviour, IInteractable
     {
         #region Inspector
@@ -22,7 +23,13 @@ namespace LuduCase.Runtime.Interactables
         [Header("Animation")]
         [SerializeField] private Transform m_handleVisual;
         [SerializeField] private float m_handleAngle = 45f;
+        [Header("Audio")]
+        [SerializeField] private AudioClip m_switchSound;
 
+        #endregion
+
+        #region Fields
+        private AudioSource m_audioSource;
         #endregion
 
         #region IInteractable Properties
@@ -34,6 +41,10 @@ namespace LuduCase.Runtime.Interactables
 
         #region Unity Methods
 
+        private void Awake()
+        {
+            m_audioSource = GetComponent<AudioSource>();
+        }
         private void Start()
         {
             UpdateVisual();
@@ -59,6 +70,10 @@ namespace LuduCase.Runtime.Interactables
             m_isOn = !m_isOn;
 
             m_onToggle?.Invoke(m_isOn);
+            if (m_switchSound != null)
+            {
+                m_audioSource.PlayOneShot(m_switchSound); 
+            }
 
             UpdateVisual();
             Debug.Log($"[Switch] Toggled: {m_isOn}");
@@ -73,7 +88,9 @@ namespace LuduCase.Runtime.Interactables
             if (m_handleVisual != null)
             {
                 float angle = m_isOn ? m_handleAngle : -m_handleAngle;
-                m_handleVisual.localRotation = Quaternion.Euler(angle, 0, 0);
+
+                
+                m_handleVisual.localRotation = Quaternion.Euler(0, 0, angle);
             }
         }
 

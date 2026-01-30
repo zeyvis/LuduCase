@@ -7,6 +7,7 @@ namespace LuduCase.Runtime.Interactables
     /// Represents a chest that requires a hold interaction to open.
     /// Can spawn an item when opened.
     /// </summary>
+    [RequireComponent(typeof(AudioSource))]
     public sealed class Chest : MonoBehaviour, IInteractable
     {
         #region Inspector
@@ -27,6 +28,8 @@ namespace LuduCase.Runtime.Interactables
 
         [Tooltip("Rotation angle when open.")]
         [SerializeField] private float m_openAngle = -110f;
+        [Header("Audio")]
+        [SerializeField] private AudioClip m_openSound;
 
         #endregion
 
@@ -35,6 +38,7 @@ namespace LuduCase.Runtime.Interactables
         private bool m_isOpened;
         private Quaternion m_closedRotation;
         private Quaternion m_openRotation;
+        private AudioSource m_audioSource;
 
         #endregion
 
@@ -52,6 +56,7 @@ namespace LuduCase.Runtime.Interactables
 
         private void Awake()
         {
+            m_audioSource = GetComponent<AudioSource>();
             if (m_lidVisual != null)
             {
                 m_closedRotation = m_lidVisual.localRotation;
@@ -97,6 +102,10 @@ namespace LuduCase.Runtime.Interactables
             if (m_isOpened) return;
 
             m_isOpened = true;
+            if (m_openSound != null)
+            {
+                m_audioSource.PlayOneShot(m_openSound);
+            }
             Debug.Log("[Chest] Opened!");
 
 
