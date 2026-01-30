@@ -153,4 +153,30 @@
 > Kodu birebir kopyalamak yerine mevcut detectorımı refactor edecek şekilde uyguladım.  
 > Çıktıyı “IInteractable hedefleme - en yakın seçim - hedef değişim eventi” olacak şekilde sade tuttum.
 
+---
+
+## Prompt 7: Inventory ve Key Pickup Sistemi
+
+**Araç:** ChatGPT-4
+**Tarih:** 2026-01-30 22:00
+
+**Prompt:**
+> Oyuncunun anahtar toplayabilmesi için bir Inventory sistemi ve KeyPickup interactable nesnesi oluşturmak istiyorum.
+> - Anahtarlar ScriptableObject (KeyData) olarak tanımlanmalı.
+> - Inventory basit bir liste tutmalı.
+> - KeyPickup nesnesi toplandığında envantere eklenip sahneden silinmeli.
+> - Ludu Arts standartlarına (m_ prefix, xml doc) uygun olmalı.
+> - Bana nasıl yapmam gerektiğini anlat ve taslağını adım adım çıkar .
+
+**Alınan Cevap (Özet):**
+> KeyData (SO), Inventory (Player Component) ve KeyPickup (IInteractable) scriptleri sağlandı. UI feedback entegrasyonu prompt data üzerinden yapıldı.
+
+**Nasıl Kullandım:**
+- [ ] Direkt kullandım
+- [x] Adapte ettim
+- [ ] Reddettim
+
+**Açıklama:**
+> Modüler bir yapı kuruldu. Anahtarlar veri olarak ayrıştırıldı, böylece ileride farklı renk/tip anahtarlar kolayca eklenebilir.
+
 
